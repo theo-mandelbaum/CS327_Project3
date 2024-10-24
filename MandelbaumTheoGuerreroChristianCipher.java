@@ -19,6 +19,19 @@ public class MandelbaumTheoGuerreroChristianCipher {
         return encryptedVector;
     }
 
+    public int[] decrypt(int ciphertext[], int decryptionKey[][]) {
+        int decryptedVector[] = new int[ciphertext.length];
+        for (int row = 0; row < decryptionKey.length; row++) {
+            for (int column = 0; column < decryptionKey[0].length; column++) {
+                decryptedVector[row] += decryptionKey[row][column] * ciphertext[column];
+            }
+        }
+        for (int i = 0; i < decryptedVector.length; i++) {
+            decryptedVector[i] = decryptedVector[i] % 26;
+        }
+        return decryptedVector;
+    }
+
     public static void main (String[] args) {
 		MandelbaumTheoGuerreroChristianCipher testObj = new MandelbaumTheoGuerreroChristianCipher();
 
