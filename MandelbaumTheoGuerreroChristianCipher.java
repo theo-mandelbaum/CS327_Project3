@@ -103,6 +103,21 @@ public class MandelbaumTheoGuerreroChristianCipher {
 
         int decryptionKey[][] = findDecryptionKey(encryptionKey);
 
+        System.out.println("Decryption Key =");
+        for (int i = 0; i < decryptionKey.length; i++) {
+            System.out.print("[");
+            for (int j = 0; j < decryptionKey[0].length; j++) {
+                System.out.print(decryptionKey[i][j]);
+                if (j != decryptionKey[0].length - 1) {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println("]");
+        }
+
+        System.out.println();
+
+
         String plainText = "JMUCSISCOOL";
         if (plainText.length() % 2 == 1) {
             plainText += 'Z';
@@ -119,7 +134,8 @@ public class MandelbaumTheoGuerreroChristianCipher {
             cipherTextString += (char) (cipherText[i] + 'A');
         }
 
-        System.out.println("Cipher text: " + cipherTextString);
+        System.out.println("Encrypted result: " + cipherTextString);
+        System.out.println();
 
         String newCipherText = "MQGVGQSMJI";
 
@@ -135,7 +151,8 @@ public class MandelbaumTheoGuerreroChristianCipher {
             clearTextString += (char) (decrptedMessage[i] + 'A');
         }
 
-        System.out.println("Cipher text: " + clearTextString);
+        System.out.println("Decrption result: " + clearTextString);
+        System.out.println();
     }
 
     public static void main (String[] args) {
