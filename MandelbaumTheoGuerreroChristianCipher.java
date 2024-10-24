@@ -3,8 +3,64 @@
 public class MandelbaumTheoGuerreroChristianCipher {
 
     public int[][] findDecryptionKey(int encryptionKey[][]) {
-        return null;
+        int determanent = (encryptionKey[0][0] * encryptionKey[1][1]) -  (encryptionKey[0][1] *  encryptionKey[1][0]);
+        int[][] inverseMod = new int[2][2];
+	    while(determanent>26){
+		    determanent = determanent -26;
+	    }
+        int xdet = xgcd(determanent,26);
+        for(int i = 0; i <= encryptionKey.length-1; i ++){
+            for(int j = 0; j <= encryptionKey[0].length-1; j++){
+                if (j == i){
+                    inverseMod[i][j] = encryptionKey[encryptionKey[i].length-1 -i][encryptionKey[j].length-1 -j];
+                    inverseMod[i][j] = (inverseMod[i][j] * xdet)%26;
+                }else{
+                    inverseMod[i][j] = encryptionKey[i][j] * -1;
+                    inverseMod[i][j] = (inverseMod[i][j] * xdet) %26;
+                }
+                while(inverseMod[i][j] < 0){
+                    inverseMod[i][j] = inverseMod[i][j] +26;
+                }
+            }
+        }
+        return inverseMod;
     }
+    public int xgcd (int inE, int inZ) {
+
+		int d_old = inZ;
+		int d_new = inE;
+		int t_old = 0;
+		int t_new = 1;
+		int s_old = 1;
+		int s_new = 0;
+		int q = Math.floorDiv(inZ, inE);
+		while (d_new > 0) {
+			int temp_d = d_new;
+			d_new = d_old - d_new*q;
+			d_old = temp_d;
+			int temp_t = t_new;
+			t_new = t_old - t_new*q;
+			t_old = temp_t;
+			int temp_s = s_new;
+			s_new = s_old - s_new*q;
+			s_old = temp_s;
+			if (d_new != 0) {
+				q = Math.floorDiv(d_old, d_new);
+			}
+		}
+
+		if (d_old != 1) {
+			return -1;
+		}
+
+		if (t_old < 0) {
+			t_old += inZ;
+		}
+
+		//System.out.println(t_old);
+		return t_old;
+	}
+
 
     public int[] encrypt(int plaintext[], int encryptionKey[][]) {
         int encryptedVector[] = new int[plaintext.length];
@@ -34,8 +90,24 @@ public class MandelbaumTheoGuerreroChristianCipher {
 
     public static void main (String[] args) {
 		MandelbaumTheoGuerreroChristianCipher testObj = new MandelbaumTheoGuerreroChristianCipher();
+        int[][] nums = new int[2][2];
+        nums[0][0] = 8;
+        nums[0][1] = 5;
+        nums[1][0] = 3;
+        nums[1][1] = 7; 
 
-		System.out.println ("********** Project 2 output begins ********** ");
+		System.out.println ("********** Project 3 output begins ********** ");
         System.out.println();
+        nums = testObj.findDecryptionKey(nums);
+        System.out.println(nums[0][0]);
+        System.out.println(nums[0][1]);
+        System.out.println(nums[1][0]);
+        System.out.println(nums[1][1]);
+        
+        int[] text = {3,20};
+        testObj.encrypt(text, nums);
+
+
 	}
 }
+
