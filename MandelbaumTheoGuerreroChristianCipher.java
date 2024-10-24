@@ -64,28 +64,78 @@ public class MandelbaumTheoGuerreroChristianCipher {
 
     public int[] encrypt(int plaintext[], int encryptionKey[][]) {
         int encryptedVector[] = new int[plaintext.length];
-        for (int row = 0; row < encryptionKey.length; row++) {
-            for (int column = 0; column < encryptionKey[0].length; column++) {
-                encryptedVector[row] += encryptionKey[row][column] * plaintext[column];
+
+        for (int i = 0; i < plaintext.length; i += encryptionKey.length) {
+            for (int row = 0; row < encryptionKey.length; row++) {
+                encryptedVector[i + row] = 0;
+                for (int column = 0; column < encryptionKey[0].length; column++) {
+                    encryptedVector[i + row] += encryptionKey[row][column] * plaintext[i + column];
+                }
+                encryptedVector[i + row] = encryptedVector[i + row] % 26;
             }
         }
-        for (int i = 0; i < encryptedVector.length; i++) {
-            encryptedVector[i] = encryptedVector[i] % 26;
-        }
+
         return encryptedVector;
     }
 
     public int[] decrypt(int ciphertext[], int decryptionKey[][]) {
         int decryptedVector[] = new int[ciphertext.length];
-        for (int row = 0; row < decryptionKey.length; row++) {
-            for (int column = 0; column < decryptionKey[0].length; column++) {
-                decryptedVector[row] += decryptionKey[row][column] * ciphertext[column];
+
+        for (int i = 0; i < ciphertext.length; i += decryptionKey.length) {
+            for (int row = 0; row < decryptionKey.length; row++) {
+                decryptedVector[i + row] = 0;
+                for (int column = 0; column < decryptionKey[0].length; column++) {
+                    decryptedVector[i + row] += decryptionKey[row][column] * ciphertext[i + column];
+                }
+                decryptedVector[i + row] = decryptedVector[i + row] % 26;
             }
         }
-        for (int i = 0; i < decryptedVector.length; i++) {
-            decryptedVector[i] = decryptedVector[i] % 26;
-        }
+
         return decryptedVector;
+    }
+
+    public void encryptionTest () {
+        int encryptionKey[][] = new int[2][2];
+        encryptionKey[0][0] = 16;
+        encryptionKey[0][1] = 7;
+        encryptionKey[1][0] = 9;
+        encryptionKey[1][1] = 14;
+
+        int decryptionKey[][] = findDecryptionKey(encryptionKey);
+
+        String plainText = "JMUCSISCOOL";
+        if (plainText.length() % 2 == 1) {
+            plainText += 'Z';
+        }
+        int plainTextArray[] = new int[plainText.length()];
+        for (int i = 0; i < plainText.length(); i++) {
+            plainTextArray[i] = plainText.charAt(i) - 'A';
+        }
+
+        int cipherText[] = encrypt(plainTextArray, encryptionKey);
+
+        String cipherTextString = "";
+        for (int i = 0; i < cipherText.length; i++) {
+            cipherTextString += (char) (cipherText[i] + 'A');
+        }
+
+        System.out.println("Cipher text: " + cipherTextString);
+
+        String newCipherText = "MQGVGQSMJI";
+
+        int newCipherArray[] = new int[newCipherText.length()];
+        for (int i = 0; i < newCipherText.length(); i++) {
+            newCipherArray[i] = newCipherText.charAt(i) - 'A';
+        }
+
+        int decrptedMessage[] = decrypt(newCipherArray, decryptionKey);
+
+        String clearTextString = "";
+        for (int i = 0; i < decrptedMessage.length; i++) {
+            clearTextString += (char) (decrptedMessage[i] + 'A');
+        }
+
+        System.out.println("Cipher text: " + clearTextString);
     }
 
     public static void main (String[] args) {
@@ -98,14 +148,16 @@ public class MandelbaumTheoGuerreroChristianCipher {
 
 		System.out.println ("********** Project 3 output begins ********** ");
         System.out.println();
-        nums = testObj.findDecryptionKey(nums);
+
+        testObj.encryptionTest();
+        /*nums = testObj.findDecryptionKey(nums);
         System.out.println(nums[0][0]);
         System.out.println(nums[0][1]);
         System.out.println(nums[1][0]);
         System.out.println(nums[1][1]);
         
         int[] text = {3,20};
-        testObj.encrypt(text, nums);
+        testObj.encrypt(text, nums);*/
 
 
 	}
